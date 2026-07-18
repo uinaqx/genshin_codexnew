@@ -1,0 +1,83 @@
+{
+  "name": "klee-spark-knight",
+  "order": 1,
+  "default": true,
+  "notes": {
+    "zh": "可莉主题。主视觉为本项目专门生成的原创同人风格插画，人物位于右侧，左侧保留 Codex 原生文案和操作区域。",
+    "en": "A Klee-inspired theme with project-specific generated fan artwork, a right-aligned subject, and clear space for native Codex controls."
+  },
+  "meta": {
+    "button": "可莉",
+    "brand": "Klee Spark Knight 可莉蹦蹦皮肤",
+    "edition": "Klee · Spark Knight Edition",
+    "signature": "Klee ♣"
+  },
+  "art": {
+    "home": "art.webp",
+    "chat": "art.webp"
+  },
+  "cards": {
+    "subtitles": [
+      "先读懂代码，再开始冒险",
+      "把新点子做成真正的功能",
+      "认真检查，不留下小麻烦",
+      "找到问题，让它砰地消失"
+    ],
+    "icons": ["code", "wand", "scales", "wrench"],
+    "opacity": 0.78
+  },
+  "stickers": {
+    "bubble": {
+      "text": "哒哒哒！今天也要把灵感炸出来！"
+    },
+    "board": {
+      "lines": ["西风骑士团", "可莉主题", "出发！"]
+    },
+    "corner": true
+  },
+  "composer": {
+    "placeholder": "告诉可莉，今天要做什么…"
+  },
+  "tokens": {
+    "--dream-ink": "#4b2b28",
+    "--dream-purple": "#9f302f",
+    "--dream-violet": "#c94a3c",
+    "--dream-pink": "#ef8662",
+    "--dream-page-bg-0": "#fffaf1",
+    "--dream-page-bg-1": "#fbe9cf",
+    "--dream-page-glow-a": "rgba(220, 76, 55, .25)",
+    "--dream-page-glow-b": "rgba(246, 186, 74, .25)",
+    "--dream-hero-art-size": "auto 315%",
+    "--dream-hero-art-position": "78% 47%",
+    "--dream-fullscreen-art-size": "auto 112%",
+    "--dream-fullscreen-art-position": "68% 50%",
+    "--dream-polaroid-art-size": "auto 165%",
+    "--dream-polaroid-art-position": "83% 38%",
+    "--dream-hero-overlay": "linear-gradient(90deg, rgba(255, 248, 233, .98) 0%, rgba(255, 242, 217, .91) 49%, rgba(255, 230, 189, .55) 73%, transparent 100%)",
+    "--dream-fullscreen-overlay": "linear-gradient(90deg, rgba(255, 249, 237, .97) 0%, rgba(255, 243, 218, .88) 42%, rgba(255, 229, 188, .47) 65%, transparent 100%)",
+    "--dream-fullscreen-wash": "rgba(255, 250, 239, .04)",
+    "--dream-hero-title-color": "#4b2924",
+    "--dream-hero-subtitle-color": "rgba(84, 46, 38, .82)",
+    "--dream-hero-title-shadow": "0 1px 0 rgba(255, 255, 255, .95), 0 4px 18px rgba(145, 57, 38, .10)",
+    "--dream-hero-chip-color": "#a72e2e",
+    "--dream-hero-chip-bg": "rgba(255, 255, 255, .63)",
+    "--dream-hero-chip-line": "rgba(190, 65, 49, .38)",
+    "--dream-hero-subtitle": "\"哒哒哒，把今天的灵感写进代码里！♣\"",
+    "--dream-chat-art-size": "auto 158%",
+    "--dream-chat-art-position": "80% 43%",
+    "--dream-chat-art-opacity": ".09",
+    "--dream-chat-wash": "rgba(255, 252, 245, .78)",
+    "--dream-card-frame": "rgba(202, 68, 51, .46)",
+    "--dream-card-ornament": "#d24c3e",
+    "--dream-card-sub-color": "#765049",
+    "--dream-card-icon-color": "#fffaf2",
+    "--dream-sticker-ink": "#a52f2e",
+    "--dream-hero-copy-width": "52%",
+    "--dream-hero-split-width": "59%",
+    "--dream-fullscreen-overlay-width": "70%",
+    "--dream-sticker-bubble-top": "16%",
+    "--dream-sticker-bubble-right": "18%",
+    "--dream-sticker-board-top": "31%",
+    "--dream-sticker-board-right": "2.4%"
+  }
+}

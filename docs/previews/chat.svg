@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080">
+  <defs>
+    <linearGradient id="page" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fffaf1"/><stop offset="1" stop-color="#fbe9cf"/></linearGradient>
+    <linearGradient id="redButton" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ef8662"/><stop offset="1" stop-color="#9f302f"/></linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="160%"><feDropShadow dx="0" dy="7" stdDeviation="13" flood-color="#6d2b22" flood-opacity=".12"/></filter>
+    <clipPath id="mainClip"><rect x="278" y="45" width="1642" height="1035" rx="20"/></clipPath>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#page)"/>
+  <rect width="278" height="1080" fill="#fff8ed" stroke="#d47b67" stroke-opacity=".32"/>
+  <rect x="278" width="1642" height="45" fill="#fffaf3"/>
+  <circle cx="25" cy="22" r="7" fill="#ef6a5b"/><circle cx="47" cy="22" r="7" fill="#f2b84c"/><circle cx="69" cy="22" r="7" fill="#5ebd74"/>
+  <g font-family="Noto Sans CJK SC" fill="#5b302a">
+    <text x="24" y="91" font-size="23" font-weight="700">Codex 工作</text>
+    <text x="24" y="148" font-size="17">＋  新建任务</text><text x="24" y="190" font-size="17">◷  已安排</text><text x="24" y="232" font-size="17">◇  插件</text><text x="24" y="274" font-size="17">▦  站点</text><text x="24" y="316" font-size="17">⌁  拉取请求</text><text x="24" y="358" font-size="17">⊕  聊天</text>
+    <text x="24" y="430" font-size="13" font-weight="700" fill="#a8312e">任务</text>
+    <rect x="13" y="448" width="252" height="56" rx="12" fill="#ffdcb8"/><text x="24" y="473" font-size="15">可莉主题插件</text><text x="24" y="492" font-size="11" fill="#986059">正在检查界面效果</text>
+    <text x="24" y="538" font-size="15">修复定位偏移</text><text x="24" y="582" font-size="15">课程PPT修改</text>
+    <circle cx="43" cy="1029" r="17" fill="url(#redButton)"/><text x="72" y="1036" font-size="16" font-weight="600">Sun</text><text x="240" y="1036" font-size="17" fill="#a8312e">♣</text>
+  </g>
+
+  <g clip-path="url(#mainClip)">
+    <rect x="278" y="45" width="1642" height="1035" fill="#fffaf4"/>
+    <image href="../../themes/klee-spark-knight/art.webp" x="278" y="45" width="1642" height="1035" preserveAspectRatio="xMidYMid slice" opacity=".09"/>
+    <rect x="278" y="45" width="1642" height="1035" fill="#fffdf8" opacity=".74"/>
+  </g>
+  <rect x="278" y="45" width="1642" height="1035" rx="20" fill="none" stroke="#c94a3c" stroke-opacity=".30"/>
+
+  <g font-family="Noto Sans CJK SC">
+    <rect x="278" y="45" width="1642" height="61" fill="#fff1dd" fill-opacity=".93"/>
+    <text x="318" y="82" fill="#a8312e" font-size="18" font-weight="700">♣  可莉主题插件</text>
+    <text x="1670" y="82" fill="#986059" font-size="13">main  ⌄</text>
+
+    <text x="608" y="180" fill="#986059" font-size="12">你</text>
+    <rect x="596" y="194" width="820" height="72" rx="18" fill="#fff" stroke="#c94a3c" stroke-opacity=".22"/>
+    <text x="624" y="238" fill="#4b2b28" font-size="17">把Codex聊天界面做成原神可莉主题，保留原生交互。</text>
+
+    <circle cx="620" cy="329" r="23" fill="url(#redButton)"/><text x="620" y="337" fill="#fff" font-size="17" text-anchor="middle">♣</text>
+    <text x="658" y="326" fill="#a8312e" font-size="15" font-weight="700">Codex</text>
+    <text x="658" y="351" fill="#986059" font-size="12">已完成主题结构检查</text>
+    <rect x="596" y="375" width="918" height="214" rx="20" fill="#fffaf2" fill-opacity=".94" stroke="#c94a3c" stroke-opacity=".28" filter="url(#shadow)"/>
+    <text x="628" y="419" fill="#4b2b28" font-size="17">可莉主题已经接入：</text>
+    <circle cx="636" cy="458" r="4" fill="#c94a3c"/><text x="656" y="464" fill="#765049" font-size="15">首页全屏与横幅两种布局</text>
+    <circle cx="636" cy="495" r="4" fill="#c94a3c"/><text x="656" y="501" fill="#765049" font-size="15">红、奶油、暖金配色和四叶草装饰</text>
+    <circle cx="636" cy="532" r="4" fill="#c94a3c"/><text x="656" y="538" fill="#765049" font-size="15">聊天背景保持低透明度，保证文字清楚</text>
+    <rect x="628" y="553" width="232" height="24" rx="12" fill="#ffe0bf"/><text x="644" y="570" fill="#a8312e" font-size="12">✓ 主题清单验证通过</text>
+
+    <rect x="532" y="842" width="1128" height="163" rx="24" fill="#fffaf3" fill-opacity=".96" stroke="#c94a3c" stroke-opacity=".34" filter="url(#shadow)"/>
+    <text x="568" y="889" fill="#a87b72" font-size="16">告诉可莉，接下来要修改什么…</text>
+    <text x="568" y="967" fill="#c94a3c" font-size="25">＋</text><text x="611" y="967" fill="#a8312e" font-size="14">完全访问</text>
+    <text x="1460" y="967" fill="#765049" font-size="14">5.6 Sol  极高⌄</text><circle cx="1618" cy="958" r="23" fill="url(#redButton)"/><text x="1618" y="966" fill="#fff" font-size="19" text-anchor="middle">↑</text>
+  </g>
+</svg>

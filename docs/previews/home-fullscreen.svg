@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080">
+  <defs>
+    <linearGradient id="page" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fffaf1"/>
+      <stop offset="1" stop-color="#fbe9cf"/>
+    </linearGradient>
+    <linearGradient id="wash" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#fff9ed" stop-opacity=".98"/>
+      <stop offset=".38" stop-color="#fff3da" stop-opacity=".91"/>
+      <stop offset=".61" stop-color="#ffe5bc" stop-opacity=".48"/>
+      <stop offset=".78" stop-color="#fff" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="redButton" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ef8662"/>
+      <stop offset="1" stop-color="#9f302f"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="160%">
+      <feDropShadow dx="0" dy="8" stdDeviation="14" flood-color="#6d2b22" flood-opacity=".15"/>
+    </filter>
+    <clipPath id="canvasClip"><rect x="302" y="91" width="1588" height="943" rx="28"/></clipPath>
+  </defs>
+
+  <rect width="1920" height="1080" fill="url(#page)"/>
+  <rect x="0" y="0" width="278" height="1080" rx="0" fill="#fff8ed" stroke="#d47b67" stroke-opacity=".32"/>
+  <rect x="278" y="0" width="1642" height="45" fill="#fffaf3"/>
+  <circle cx="25" cy="22" r="7" fill="#ef6a5b"/><circle cx="47" cy="22" r="7" fill="#f2b84c"/><circle cx="69" cy="22" r="7" fill="#5ebd74"/>
+  <text x="101" y="29" fill="#765049" font-size="16" font-family="Noto Sans CJK SC">Codex</text>
+
+  <g font-family="Noto Sans CJK SC" fill="#5b302a">
+    <text x="24" y="91" font-size="23" font-weight="700">Codex 工作</text>
+    <text x="24" y="148" font-size="17">＋  新建任务</text>
+    <text x="24" y="190" font-size="17">◷  已安排</text>
+    <text x="24" y="232" font-size="17">◇  插件</text>
+    <text x="24" y="274" font-size="17">▦  站点</text>
+    <text x="24" y="316" font-size="17">⌁  拉取请求</text>
+    <text x="24" y="358" font-size="17">⊕  聊天</text>
+    <text x="24" y="430" font-size="13" font-weight="700" fill="#a8312e">项目</text>
+    <rect x="13" y="448" width="252" height="42" rx="12" fill="#ffdcb8"/>
+    <text x="24" y="476" font-size="16">▱  可莉主题项目</text>
+    <text x="24" y="521" font-size="16">▱  我的代码</text>
+    <text x="24" y="563" font-size="16">▱  学习资料</text>
+    <circle cx="43" cy="1029" r="17" fill="url(#redButton)"/>
+    <text x="72" y="1036" font-size="16" font-weight="600">Sun</text>
+    <text x="240" y="1036" font-size="17" fill="#a8312e">♣</text>
+  </g>
+
+  <rect x="278" y="45" width="1642" height="45" fill="#fff0dc" stroke="#c94a3c" stroke-opacity=".26"/>
+  <g font-family="Noto Sans CJK SC">
+    <text x="316" y="70" fill="#a8312e" font-size="17" font-weight="700">♣  Klee Spark Knight 可莉蹦蹦皮肤</text>
+    <text x="316" y="84" fill="#986059" font-size="10">Klee · Spark Knight Edition</text>
+    <text x="1773" y="72" fill="#a8312e" font-size="22" font-style="italic">Klee ♣</text>
+  </g>
+
+  <g clip-path="url(#canvasClip)">
+    <rect x="302" y="91" width="1588" height="943" fill="#fff6e7"/>
+    <image href="../../themes/klee-spark-knight/art.webp" x="302" y="91" width="1588" height="943" preserveAspectRatio="xMidYMid slice"/>
+    <rect x="302" y="91" width="1588" height="943" fill="url(#wash)"/>
+  </g>
+  <rect x="302" y="91" width="1588" height="943" rx="28" fill="none" stroke="#c94a3c" stroke-opacity=".38" stroke-width="2"/>
+
+  <g font-family="Noto Sans CJK SC">
+    <text x="374" y="252" fill="#4b2924" font-size="40" font-weight="700">我们应该在</text>
+    <rect x="599" y="211" width="182" height="55" rx="26" fill="#fff" fill-opacity=".58" stroke="#b93c32" stroke-opacity=".42"/>
+    <text x="622" y="251" fill="#a72e2e" font-size="31" font-weight="700">可莉项目</text>
+    <text x="795" y="252" fill="#4b2924" font-size="40" font-weight="700">中做些什么？</text>
+    <text x="376" y="302" fill="#765049" font-size="18">哒哒哒，把今天的灵感写进代码里！♣</text>
+
+    <g filter="url(#shadow)">
+      <rect x="345" y="545" width="337" height="171" rx="19" fill="#fff9f1" fill-opacity=".80" stroke="#c94a3c" stroke-opacity=".40"/>
+      <rect x="698" y="545" width="337" height="171" rx="19" fill="#fff9f1" fill-opacity=".80" stroke="#c94a3c" stroke-opacity=".40"/>
+      <rect x="1051" y="545" width="337" height="171" rx="19" fill="#fff9f1" fill-opacity=".80" stroke="#c94a3c" stroke-opacity=".40"/>
+      <rect x="1404" y="545" width="337" height="171" rx="19" fill="#fff9f1" fill-opacity=".80" stroke="#c94a3c" stroke-opacity=".40"/>
+    </g>
+    <g text-anchor="middle">
+      <circle cx="514" cy="583" r="27" fill="url(#redButton)"/><text x="514" y="592" fill="#fff" font-size="25">&lt;/&gt;</text>
+      <circle cx="867" cy="583" r="27" fill="url(#redButton)"/><text x="867" y="592" fill="#fff" font-size="25">✦</text>
+      <circle cx="1220" cy="583" r="27" fill="url(#redButton)"/><text x="1220" y="592" fill="#fff" font-size="23">✓</text>
+      <circle cx="1573" cy="583" r="27" fill="url(#redButton)"/><text x="1573" y="592" fill="#fff" font-size="22">⌕</text>
+      <text x="514" y="640" fill="#4b2b28" font-size="17" font-weight="600">探索并理解代码</text>
+      <text x="514" y="672" fill="#765049" font-size="14">先读懂代码，再开始冒险</text>
+      <text x="867" y="640" fill="#4b2b28" font-size="17" font-weight="600">构建新功能</text>
+      <text x="867" y="672" fill="#765049" font-size="14">把新点子做成真正的功能</text>
+      <text x="1220" y="640" fill="#4b2b28" font-size="17" font-weight="600">审查代码</text>
+      <text x="1220" y="672" fill="#765049" font-size="14">认真检查，不留下小麻烦</text>
+      <text x="1573" y="640" fill="#4b2b28" font-size="17" font-weight="600">修复问题</text>
+      <text x="1573" y="672" fill="#765049" font-size="14">找到问题，让它砰地消失</text>
+    </g>
+
+    <rect x="597" y="855" width="986" height="143" rx="24" fill="#fffaf3" fill-opacity=".92" stroke="#c94a3c" stroke-opacity=".34" filter="url(#shadow)"/>
+    <text x="632" y="900" fill="#a87b72" font-size="16">告诉可莉，今天要做什么…</text>
+    <text x="632" y="963" fill="#c94a3c" font-size="24">＋</text>
+    <text x="675" y="963" fill="#a8312e" font-size="14">完全访问</text>
+    <text x="1394" y="963" fill="#765049" font-size="14">5.6 Sol  极高⌄</text>
+    <circle cx="1544" cy="955" r="22" fill="url(#redButton)"/><text x="1544" y="963" fill="#fff" font-size="19" text-anchor="middle">↑</text>
+  </g>
+
+  <g font-family="Noto Sans CJK SC">
+    <path d="M1418 254 C1374 232 1332 260 1338 304 C1343 341 1386 346 1414 325 L1440 345 L1435 313 C1468 283 1451 263 1418 254Z" fill="#fff8e9" fill-opacity=".91" stroke="#b93c32" stroke-opacity=".45"/>
+    <text x="1361" y="288" fill="#a8312e" font-size="14">哒哒哒！</text>
+    <text x="1353" y="311" fill="#765049" font-size="12">今天也要出发！</text>
+  </g>
+</svg>
