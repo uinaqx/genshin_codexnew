@@ -1,4 +1,4 @@
-#ifndef AppVersion
+﻿#ifndef AppVersion
   #define AppVersion "1.1.0"
 #endif
 
