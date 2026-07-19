@@ -99,7 +99,7 @@ jobs:
           if-no-files-found: error
 
       - name: Publish GitHub release
-        shell: powershell
+        shell: pwsh
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
