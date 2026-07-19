@@ -6,7 +6,7 @@
 
 直接下载并双击：
 
-[下载KleeCodexSkin-Setup-v1.1.0.exe](https://github.com/uinaqx/genshin_codexnew/releases/latest/download/KleeCodexSkin-Setup-v1.1.0.exe)
+[下载KleeCodexSkin-Setup-v1.1.1.exe](https://github.com/uinaqx/genshin_codexnew/releases/latest/download/KleeCodexSkin-Setup-v1.1.1.exe)
 
 安装包自带Node运行环境。安装完成后会自动打开可莉Codex皮肤管理器，可以：
 
@@ -14,6 +14,8 @@
 - 切换全屏版式和横幅版式
 - 恢复Codex官方界面
 - 从管理器或Windows设置中彻底卸载
+- 启动失败时自动回滚并从官方入口重启Codex
+- 导出不包含登录凭据内容的诊断报告
 
 首次启用前，需要先安装Microsoft Store版Codex并正常打开、登录一次。安装包目前没有商业代码签名，Windows首次下载时可能显示SmartScreen提示，确认文件来自本仓库后选择仍要运行即可。
 

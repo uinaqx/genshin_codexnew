@@ -24,9 +24,7 @@ function Write-ManagerLog([string]$Message) {
 }
 
 function Assert-CodexReady {
-  $package = Get-AppxPackage OpenAI.Codex -ErrorAction SilentlyContinue |
-    Sort-Object Version -Descending | Select-Object -First 1
-  if (-not $package) {
+  try { $null = Get-DreamCodexPackage } catch {
     throw '没有检测到Microsoft Store版Codex。请先安装Codex并正常打开一次。'
   }
   $config = Join-Path $HOME '.codex\config.toml'
@@ -38,14 +36,29 @@ function Assert-CodexReady {
 function Invoke-EnableSkin([ValidateSet('fullscreen', 'banner')][string]$Layout) {
   Assert-CodexReady
   Write-ManagerLog "Enable requested, layout=$Layout"
-  & (Join-Path $ScriptsRoot 'install-dream-skin.ps1') -Port $Port -NoShortcuts | Out-Null
-  & (Join-Path $ScriptsRoot 'start-dream-skin.ps1') -Port $Port -RestartExisting | Out-Null
-  & $NodePath (Join-Path $ScriptsRoot 'set-theme.mjs') 'klee-spark-knight' $Layout | Out-Null
-  if ($LASTEXITCODE -ne 0) { throw "主题切换失败，退出码：$LASTEXITCODE" }
-  Write-ManagerLog "Enable completed, layout=$Layout"
+  try {
+    # Auto-recovery stays off until the first launch is proven healthy. This avoids
+    # a hidden watcher repeatedly relaunching a Codex build that is stuck at splash.
+    & (Join-Path $ScriptsRoot 'install-dream-skin.ps1') -Port $Port -NoShortcuts -NoAutoRecover | Out-Null
+    & (Join-Path $ScriptsRoot 'start-dream-skin.ps1') -Port $Port -RestartExisting | Out-Null
+    & $NodePath (Join-Path $ScriptsRoot 'set-theme.mjs') 'klee-spark-knight' $Layout | Out-Null
+    if ($LASTEXITCODE -ne 0) { throw "主题切换失败，退出码：$LASTEXITCODE" }
+    Write-ManagerLog "Enable completed, layout=$Layout"
+  } catch {
+    $reason = $_.Exception.Message
+    Write-ManagerLog "Enable failed; rolling back to official Codex: $reason"
+    try { Invoke-RestoreOfficial -NoRestart } catch {
+      Write-ManagerLog "Rollback restore warning: $($_.Exception.Message)"
+    }
+    try { Stop-DreamCodexProcesses } catch {}
+    try { Start-DreamCodexOfficial | Out-Null } catch {
+      Write-ManagerLog "Official relaunch warning: $($_.Exception.Message)"
+    }
+    throw "皮肤没有通过启动检查，已自动恢复并重启官方Codex。原始错误：$reason"
+  }
 }
 
-function Invoke-RestoreOfficial {
+function Invoke-RestoreOfficial([switch]$NoRestart) {
   Write-ManagerLog 'Restore official interface requested.'
   try {
     & (Join-Path $ScriptsRoot 'restore-dream-skin.ps1') -Port $Port -Uninstall -RestoreBaseTheme | Out-Null
@@ -53,7 +66,59 @@ function Invoke-RestoreOfficial {
     Write-ManagerLog "Restore with config backup failed: $($_.Exception.Message)"
     & (Join-Path $ScriptsRoot 'restore-dream-skin.ps1') -Port $Port -Uninstall | Out-Null
   }
+  if (-not $NoRestart) {
+    Stop-DreamCodexProcesses
+    Start-DreamCodexOfficial | Out-Null
+  }
   Write-ManagerLog 'Official interface restored.'
+}
+
+function Export-DreamDiagnostics {
+  $stamp = Get-Date -Format 'yyyyMMdd-HHmmss'
+  $desktop = [Environment]::GetFolderPath('Desktop')
+  $path = Join-Path $desktop "KleeCodexSkin-Diagnostics-$stamp.txt"
+  $lines = New-Object System.Collections.Generic.List[string]
+  $lines.Add('Klee Codex Skin diagnostics (no auth.json contents are collected)')
+  $lines.Add("Generated: $(Get-Date -Format o)")
+  $lines.Add("Manager: 1.1.1")
+  $lines.Add("Windows: $([Environment]::OSVersion.VersionString)")
+  $lines.Add("PowerShell: $($PSVersionTable.PSVersion)")
+  try {
+    $package = Get-DreamCodexPackage
+    $lines.Add("Codex package: $($package.PackageFullName)")
+    $lines.Add("Codex version: $($package.Version)")
+  } catch { $lines.Add("Codex package error: $($_.Exception.Message)") }
+  $auth = Join-Path $HOME '.codex\auth.json'
+  $config = Join-Path $HOME '.codex\config.toml'
+  $lines.Add("Auth file exists: $(Test-Path -LiteralPath $auth)")
+  $lines.Add("Config file exists: $(Test-Path -LiteralPath $config)")
+  $lines.Add("Watcher shortcut exists: $(Test-Path -LiteralPath (Join-Path ([Environment]::GetFolderPath('Startup')) 'Codex Dream Skin Watcher.lnk'))")
+  foreach ($hostName in @('127.0.0.1', '[::1]')) {
+    try {
+      $targets = @(Invoke-RestMethod "http://$($hostName):$Port/json/list" -TimeoutSec 1)
+      $lines.Add("CDP $hostName`:$Port reachable: True; app pages: $(@($targets | Where-Object { $_.url -like 'app://*' }).Count)")
+    } catch { $lines.Add("CDP $hostName`:$Port reachable: False") }
+  }
+  $lines.Add('')
+  $lines.Add('Processes:')
+  try {
+    $processes = Get-CimInstance Win32_Process -Filter "Name='ChatGPT.exe' OR Name='Codex.exe'" -ErrorAction Stop |
+      Select-Object ProcessId, Name, ExecutablePath, CommandLine | Format-List | Out-String
+    $lines.Add($processes.TrimEnd())
+  } catch { $lines.Add("Process query error: $($_.Exception.Message)") }
+  foreach ($logName in @('manager.log', 'injector-error.log', 'injector.log', 'watcher.log')) {
+    $logPath = Join-Path $StateRoot $logName
+    $lines.Add('')
+    $lines.Add("===== $logName =====")
+    if (Test-Path -LiteralPath $logPath) {
+      $tail = Get-Content -LiteralPath $logPath -Tail 120 -ErrorAction SilentlyContinue
+      if ($tail) { $lines.Add(($tail -join [Environment]::NewLine)) } else { $lines.Add('(empty)') }
+    } else { $lines.Add('(missing)') }
+  }
+  Set-Content -LiteralPath $path -Value $lines -Encoding utf8
+  Write-ManagerLog "Diagnostics exported: $path"
+  Start-Process -FilePath (Join-Path $env:WINDIR 'explorer.exe') -ArgumentList $desktop
+  return $path
 }
 
 function Get-SkinStatusText {
@@ -91,7 +156,7 @@ $muted = [System.Drawing.Color]::FromArgb(118, 80, 73)
 
 $form = New-Object System.Windows.Forms.Form
 $form.Text = '可莉 Codex 皮肤管理器'
-$form.Size = New-Object System.Drawing.Size(760, 560)
+$form.Size = New-Object System.Drawing.Size(760, 650)
 $form.StartPosition = 'CenterScreen'
 $form.FormBorderStyle = 'FixedSingle'
 $form.MaximizeBox = $false
@@ -154,22 +219,23 @@ $fullscreenButton = New-ManagerButton '切换为全屏版式' 28 298 328 $softCr
 $bannerButton = New-ManagerButton '切换为横幅版式' 386 298 328 $softCream $darkRed
 $restoreButton = New-ManagerButton '恢复官方界面' 28 374 328 ([System.Drawing.Color]::White) $ink
 $uninstallButton = New-ManagerButton '彻底卸载皮肤管理器' 386 374 328 ([System.Drawing.Color]::White) $darkRed
+$diagnosticsButton = New-ManagerButton '导出诊断报告' 28 450 686 $softCream $ink
 
 $hint = New-Object System.Windows.Forms.Label
 $hint.Text = '启用皮肤时Codex会自动重启一次。聊天、项目、登录信息和插件不会被删除。'
 $hint.ForeColor = $muted
 $hint.AutoSize = $true
-$hint.Location = New-Object System.Drawing.Point(31, 462)
+$hint.Location = New-Object System.Drawing.Point(31, 535)
 $form.Controls.Add($hint)
 
 $version = New-Object System.Windows.Forms.Label
-$version.Text = 'Klee Spark Knight · v1.1.0'
+$version.Text = 'Klee Spark Knight · v1.1.1'
 $version.ForeColor = $muted
 $version.AutoSize = $true
-$version.Location = New-Object System.Drawing.Point(31, 492)
+$version.Location = New-Object System.Drawing.Point(31, 565)
 $form.Controls.Add($version)
 
-$buttons = @($enableButton, $fullscreenButton, $bannerButton, $restoreButton, $uninstallButton)
+$buttons = @($enableButton, $fullscreenButton, $bannerButton, $restoreButton, $uninstallButton, $diagnosticsButton)
 
 function Invoke-UiAction([string]$BusyText, [scriptblock]$Action, [string]$SuccessText) {
   foreach ($button in $buttons) { $button.Enabled = $false }
@@ -192,7 +258,10 @@ function Invoke-UiAction([string]$BusyText, [scriptblock]$Action, [string]$Succe
 $enableButton.Add_Click({ Invoke-UiAction '正在启动可莉皮肤…' { Invoke-EnableSkin 'fullscreen' } '可莉皮肤已启用' })
 $fullscreenButton.Add_Click({ Invoke-UiAction '正在切换全屏版式…' { Invoke-EnableSkin 'fullscreen' } '已切换为全屏版式' })
 $bannerButton.Add_Click({ Invoke-UiAction '正在切换横幅版式…' { Invoke-EnableSkin 'banner' } '已切换为横幅版式' })
-$restoreButton.Add_Click({ Invoke-UiAction '正在恢复官方界面…' { Invoke-RestoreOfficial } '已恢复Codex官方界面' })
+$restoreButton.Add_Click({ Invoke-UiAction '正在恢复并重启官方Codex…' { Invoke-RestoreOfficial } '已恢复并重启官方Codex' })
+$diagnosticsButton.Add_Click({
+  Invoke-UiAction '正在生成诊断报告…' { $script:LastDiagnosticsPath = Export-DreamDiagnostics } '诊断报告已保存到桌面'
+})
 $uninstallButton.Add_Click({
   $answer = [System.Windows.Forms.MessageBox]::Show($form, '确定彻底卸载可莉皮肤管理器吗？Codex会恢复为官方界面。', '确认卸载', 'YesNo', 'Warning')
   if ($answer -ne [System.Windows.Forms.DialogResult]::Yes) { return }
