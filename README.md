@@ -2,6 +2,21 @@
 
 给Codex Desktop做的一套可莉主题。浅奶油色界面、可莉红与暖金色点缀，首页、侧栏、建议卡片、输入框和聊天背景会一起换肤，原生按钮仍可正常点击。
 
+## Windows一键安装
+
+直接下载并双击：
+
+[下载KleeCodexSkin-Setup-v1.1.0.exe](https://github.com/uinaqx/genshin_codexnew/releases/latest/download/KleeCodexSkin-Setup-v1.1.0.exe)
+
+安装包自带Node运行环境。安装完成后会自动打开可莉Codex皮肤管理器，可以：
+
+- 一键启用或修复可莉皮肤
+- 切换全屏版式和横幅版式
+- 恢复Codex官方界面
+- 从管理器或Windows设置中彻底卸载
+
+首次启用前，需要先安装Microsoft Store版Codex并正常打开、登录一次。安装包目前没有商业代码签名，Windows首次下载时可能显示SmartScreen提示，确认文件来自本仓库后选择仍要运行即可。
+
 主视觉为本项目专门生成的原创同人风格插画，没有直接转载官方图或来源不明的二创图。
 
 ## 界面预览
@@ -16,9 +31,9 @@
 
 - Windows 10/11，Microsoft Store版Codex Desktop
 - macOS，官方Codex Desktop
-- Windows需要Node.js 20或更高版本
+- Windows一键安装包无需另装Node.js；手动安装方式需要Node.js 20或更高版本
 
-## Windows安装
+## Windows手动安装
 
 先打开并登录一次Codex，然后在PowerShell中运行：
 

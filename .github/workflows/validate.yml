@@ -17,4 +17,6 @@ jobs:
         with:
           node-version: 24
       - name: Validate theme manifest and assets
-        run: node tests/test-klee-theme.mjs
+        run: |
+          node tests/test-klee-theme.mjs
+          node tests/test-windows-installer.mjs

@@ -1,0 +1,113 @@
+name: Build Windows installer
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "manager/**"
+      - "installer/windows/**"
+      - "scripts/**"
+      - "assets/**"
+      - "styles/**"
+      - "themes/**"
+      - ".github/workflows/windows-installer.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: windows-installer
+  cancel-in-progress: true
+
+env:
+  APP_VERSION: "1.1.0"
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Validate PowerShell sources
+        shell: powershell
+        run: |
+          $files = @(
+            "manager\KleeSkinManager.ps1",
+            "scripts\lib\windows-common.ps1",
+            "scripts\start-dream-skin.ps1",
+            "scripts\restore-dream-skin.ps1",
+            "scripts\verify-dream-skin.ps1"
+          )
+          foreach ($file in $files) {
+            $tokens = $null
+            $errors = $null
+            [System.Management.Automation.Language.Parser]::ParseFile((Resolve-Path $file), [ref]$tokens, [ref]$errors) | Out-Null
+            if ($errors.Count -gt 0) {
+              $errors | ForEach-Object { Write-Error "${file}: $($_.Message)" }
+              exit 1
+            }
+          }
+
+      - name: Validate theme
+        run: node tests/test-klee-theme.mjs
+
+      - name: Assemble self-contained payload
+        shell: powershell
+        run: |
+          $payload = Join-Path $PWD "installer\windows\payload"
+          New-Item -ItemType Directory -Force -Path $payload | Out-Null
+          foreach ($folder in @("assets", "manager", "scripts", "styles", "themes")) {
+            Copy-Item -LiteralPath (Join-Path $PWD $folder) -Destination $payload -Recurse -Force
+          }
+          foreach ($file in @("README.md", "LICENSE", "NOTICE.md", "ASSET_PROVENANCE.md")) {
+            Copy-Item -LiteralPath (Join-Path $PWD $file) -Destination $payload -Force
+          }
+          $nodeDir = Join-Path $payload "runtime\node"
+          New-Item -ItemType Directory -Force -Path $nodeDir | Out-Null
+          $nodeExe = (Get-Command node.exe).Source
+          Copy-Item -LiteralPath $nodeExe -Destination (Join-Path $nodeDir "node.exe") -Force
+          $nodeLicense = Join-Path (Split-Path -Parent $nodeExe) "LICENSE"
+          if (Test-Path -LiteralPath $nodeLicense) {
+            Copy-Item -LiteralPath $nodeLicense -Destination (Join-Path $nodeDir "LICENSE") -Force
+          }
+          Set-Content -LiteralPath (Join-Path $payload "VERSION") -Value $env:APP_VERSION -Encoding ascii
+
+      - name: Install Inno Setup
+        shell: powershell
+        run: choco install innosetup --no-progress -y
+
+      - name: Build installer
+        shell: powershell
+        run: |
+          $iscc = "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe"
+          if (-not (Test-Path -LiteralPath $iscc)) { throw "ISCC.exe was not found" }
+          & $iscc "/DAppVersion=$env:APP_VERSION" "installer\windows\KleeCodexSkin.iss"
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          $installer = Get-ChildItem "installer\windows\output\*.exe" | Select-Object -First 1
+          if (-not $installer -or $installer.Length -lt 1MB) { throw "Installer output is missing or unexpectedly small" }
+          Get-FileHash -Algorithm SHA256 $installer.FullName | Format-List
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: KleeCodexSkin-Setup-v1.1.0
+          path: installer/windows/output/KleeCodexSkin-Setup-v1.1.0.exe
+          if-no-files-found: error
+
+      - name: Publish GitHub release
+        shell: powershell
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $tag = "v$env:APP_VERSION"
+          $asset = "installer\windows\output\KleeCodexSkin-Setup-v$env:APP_VERSION.exe"
+          gh release view $tag --repo $env:GITHUB_REPOSITORY *> $null
+          if ($LASTEXITCODE -eq 0) {
+            gh release upload $tag $asset --clobber --repo $env:GITHUB_REPOSITORY
+          } else {
+            gh release create $tag $asset --repo $env:GITHUB_REPOSITORY --target $env:GITHUB_SHA --title "可莉 Codex 皮肤管理器 v$env:APP_VERSION" --notes "下载EXE后双击安装。内置Node运行环境，可在管理器中启用可莉皮肤、切换版式、恢复官方界面或彻底卸载。"
+          }

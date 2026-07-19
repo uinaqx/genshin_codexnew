@@ -5,7 +5,9 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
-$node = (Get-Command node -ErrorAction Stop).Source
+$SkillRoot = Split-Path -Parent $PSScriptRoot
+. (Join-Path $PSScriptRoot 'lib\windows-common.ps1')
+$node = Resolve-DreamNode -Root $SkillRoot
 $injector = Join-Path $PSScriptRoot 'injector.mjs'
 $arguments = @($injector, '--verify', '--port', "$Port")
 if ($ScreenshotPath) { $arguments += @('--screenshot', $ScreenshotPath) }

@@ -6,7 +6,9 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
-$node = (Get-Command node -ErrorAction Stop).Source
+$SkillRoot = Split-Path -Parent $PSScriptRoot
+. (Join-Path $PSScriptRoot 'lib\windows-common.ps1')
+$node = Resolve-DreamNode -Root $SkillRoot
 $injector = Join-Path $PSScriptRoot 'injector.mjs'
 $StateRoot = Join-Path $env:LOCALAPPDATA 'CodexDreamSkin'
 $StatePath = Join-Path $StateRoot 'state.json'

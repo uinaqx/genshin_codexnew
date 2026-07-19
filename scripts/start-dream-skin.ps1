@@ -8,6 +8,7 @@ param(
 
 $ErrorActionPreference = 'Stop'
 $SkillRoot = Split-Path -Parent $PSScriptRoot
+. (Join-Path $PSScriptRoot 'lib\windows-common.ps1')
 $Injector = Join-Path $PSScriptRoot 'injector.mjs'
 $StateRoot = Join-Path $env:LOCALAPPDATA 'CodexDreamSkin'
 $StatePath = Join-Path $StateRoot 'state.json'
@@ -45,7 +46,7 @@ function Stop-CodexCompletely {
   Start-Sleep -Milliseconds 300
 }
 
-$node = (Get-Command node -ErrorAction Stop).Source
+$node = Resolve-DreamNode -Root $SkillRoot
 $debugReady = Test-CodexDebugPort $Port
 $mainProcesses = @(Get-Process ChatGPT -ErrorAction SilentlyContinue | Where-Object { $_.MainWindowHandle -ne 0 })
 
