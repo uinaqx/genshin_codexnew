@@ -25,7 +25,7 @@ function parseArgs(argv) {
     else throw new Error(`Unknown argument: ${arg}`);
   }
   if (!options.image || !options.themesRoot) {
-    throw new Error("Usage: node generate-quick-theme-macos.mjs --image <png-or-jpg> [--name my-theme] --themes-root <dir> [--reserved-root <dir>]");
+    throw new Error("Usage: node generate-quick-theme-macos.mjs --image <png-jpg-or-webp> [--name my-theme] --themes-root <dir> [--reserved-root <dir>]");
   }
   return options;
 }
@@ -297,8 +297,8 @@ async function installTheme({ image, name, themesRoot, reservedRoot, manifest, a
 const options = parseArgs(process.argv.slice(2));
 const image = await fs.realpath(path.resolve(options.image));
 const extension = path.extname(image).toLowerCase();
-if (![".png", ".jpg", ".jpeg"].includes(extension)) {
-  throw new Error(`只支持 PNG / JPG 图片（拿到的是 '${extension || "无扩展名"}'）`);
+if (![".png", ".jpg", ".jpeg", ".webp"].includes(extension)) {
+  throw new Error(`只支持 PNG / JPG / WebP 图片（拿到的是 '${extension || "无扩展名"}'）`);
 }
 const name = await deriveName(image, options.name);
 if (!/^[a-z][a-z0-9]*(-[a-z0-9]+)*$/.test(name)) {
@@ -320,7 +320,7 @@ try {
 
 const title = titleFromName(name);
 const { tokens, route } = buildTokens(analysis, title);
-const artFile = extension === ".png" ? "art.png" : "art.jpg";
+const artFile = extension === ".png" ? "art.png" : extension === ".webp" ? "art.webp" : "art.jpg";
 const button = name.split("-")[0].slice(0, 6);
 const manifest = {
   name,
