@@ -1,12 +1,7 @@
 # Notice
 
-本项目基于[Finderchangchang/codex-autoskin](https://github.com/Finderchangchang/codex-autoskin)修改，保留原项目MIT许可证和版权声明。
+本项目最初参考 [Finderchangchang/codex-autoskin](https://github.com/Finderchangchang/codex-autoskin) 的 MIT 许可实现。
 
-主要修改包括：
+从 v2.0 起，主分支不再包含原项目的调试端口、CDP 注入、watcher、自动重启或配置写入实现。当前代码只提供官方外观配色、安全中心、旧版精确残留清理、诊断和构建测试。
 
-- 新增可莉主题、专属配色、文案和装饰样式
-- 将可莉主题设为默认主题
-- 新增主题预览和中文安装说明
-- 调整自动测试以验证可莉主题
-
-本项目不会修改Codex官方应用文件、`app.asar`或签名资源。皮肤通过仅绑定本机回环地址的Chrome DevTools Protocol注入。
+本项目不会修改 ChatGPT/Codex 官方应用文件、签名资源、应用包、启动参数、缓存或账号状态。

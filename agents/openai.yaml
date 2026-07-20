@@ -1,4 +1,4 @@
 interface:
-  display_name: "Codex Klee Skin"
-  short_description: "Apply, verify, and safely restore the Klee-themed Codex skin"
-  default_prompt: "Use $codex-klee-skin to apply, verify, repair, or restore the Klee Spark Knight skin for Codex Desktop."
+  display_name: "Klee Codex Official Theme"
+  short_description: "Apply the Klee palette through official Appearance settings"
+  default_prompt: "Use $klee-codex-official-theme to open official Appearance settings, provide the Klee palette, or safely clean legacy v1.x remnants."

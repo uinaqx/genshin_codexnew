@@ -1,0 +1,21 @@
+{
+  "$schema": "../../schema/palette.schema.json",
+  "id": "klee-spark-knight",
+  "name": "可莉火花骑士",
+  "version": 2,
+  "mode": "light",
+  "colors": {
+    "accent": "#C94A3C",
+    "background": "#FFF9F0",
+    "foreground": "#4B2B28",
+    "secondary": "#E8B04A",
+    "surface": "#FFF0DC"
+  },
+  "application": "Open ChatGPT/Codex Settings, choose Appearance, then enter the supported colors manually.",
+  "safety": {
+    "modifiesApplicationPackage": false,
+    "usesDebugPort": false,
+    "writesCodexConfig": false,
+    "installsWatcher": false
+  }
+}

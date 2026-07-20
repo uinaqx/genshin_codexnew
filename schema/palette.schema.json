@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/uinaqx/genshin_codexnew/schema/palette.schema.json",
+  "title": "Klee official appearance palette",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "name", "version", "mode", "colors", "application", "safety"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "id": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" },
+    "name": { "type": "string", "minLength": 1 },
+    "version": { "type": "integer", "minimum": 2 },
+    "mode": { "enum": ["light", "dark"] },
+    "colors": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["accent", "background", "foreground", "secondary", "surface"],
+      "properties": {
+        "accent": { "$ref": "#/$defs/color" },
+        "background": { "$ref": "#/$defs/color" },
+        "foreground": { "$ref": "#/$defs/color" },
+        "secondary": { "$ref": "#/$defs/color" },
+        "surface": { "$ref": "#/$defs/color" }
+      }
+    },
+    "application": { "type": "string", "minLength": 1 },
+    "safety": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["modifiesApplicationPackage", "usesDebugPort", "writesCodexConfig", "installsWatcher"],
+      "properties": {
+        "modifiesApplicationPackage": { "const": false },
+        "usesDebugPort": { "const": false },
+        "writesCodexConfig": { "const": false },
+        "installsWatcher": { "const": false }
+      }
+    }
+  },
+  "$defs": {
+    "color": { "type": "string", "pattern": "^#[0-9A-F]{6}$" }
+  }
+}

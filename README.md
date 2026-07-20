@@ -1,124 +1,99 @@
-# Codex Klee Skin
+<div align="center">
 
-给Codex Desktop做的一套可莉主题。浅奶油色界面、可莉红与暖金色点缀，首页、侧栏、建议卡片、输入框和聊天背景会一起换肤，原生按钮仍可正常点击。
+# 可莉 Codex 主题 · 安全版
 
-## Windows一键安装
+一套基于 ChatGPT/Codex 官方“外观”设置的可莉配色，以及用于清理旧版注入残留的 Windows 安全中心。
 
-直接下载并双击：
+[![安全版](https://img.shields.io/badge/安全版-v2.0.0-C94A3C)](https://github.com/uinaqx/genshin_codexnew/releases/tag/v2.0.0)
+[![Windows 构建](https://github.com/uinaqx/genshin_codexnew/actions/workflows/windows-installer.yml/badge.svg)](https://github.com/uinaqx/genshin_codexnew/actions/workflows/windows-installer.yml)
+[![校验](https://github.com/uinaqx/genshin_codexnew/actions/workflows/validate.yml/badge.svg)](https://github.com/uinaqx/genshin_codexnew/actions/workflows/validate.yml)
+[![License: MIT](https://img.shields.io/badge/Code-MIT-E8B04A)](LICENSE)
 
-[下载KleeCodexSkin-Setup-v1.1.3.exe](https://github.com/uinaqx/genshin_codexnew/releases/latest/download/KleeCodexSkin-Setup-v1.1.3.exe)
+</div>
 
-> 紧急兼容说明：Microsoft Store Codex 26.700及以上版本会拒绝CDP调试启动。v1.1.3不会在这些版本上启用皮肤；安装后会备份并重置Microsoft Store沙箱中的真实Codex缓存、`config.toml`与账号会话，再从官方入口启动。需要重新登录，项目目录和`.codex`会话历史不会被删除，旧状态均以`before-klee-recovery`名称保留。
+> [!CAUTION]
+> 请停止使用 v1.1.0–v1.1.3 的 Windows 换肤功能。旧版会通过调试端口启动应用，并包含自动恢复、缓存和账号状态处理逻辑，可能导致新版 ChatGPT/Codex 停在启动画面。v2.0 已将这些代码全部移除。
 
-安装包自带Node运行环境。安装完成后会自动打开可莉Codex皮肤管理器，可以：
+## Windows 下载
 
-- 一键启用或修复可莉皮肤
-- 切换全屏版式和横幅版式
-- 恢复Codex官方界面
-- 从管理器或Windows设置中彻底卸载
-- 启动失败时自动回滚并从官方入口重启Codex
-- 导出不包含登录凭据内容的诊断报告
+[**下载 KleeCodexSafety-Setup-v2.0.0.exe**](https://github.com/uinaqx/genshin_codexnew/releases/latest/download/KleeCodexSafety-Setup-v2.0.0.exe)
 
-首次启用前，需要先安装Microsoft Store版Codex并正常打开、登录一次。安装包目前没有商业代码签名，Windows首次下载时可能显示SmartScreen提示，确认文件来自本仓库后选择仍要运行即可。
+校验文件：[KleeCodexSafety-Setup-v2.0.0.exe.sha256](https://github.com/uinaqx/genshin_codexnew/releases/latest/download/KleeCodexSafety-Setup-v2.0.0.exe.sha256)
 
-主视觉为本项目专门生成的原创同人风格插画，没有直接转载官方图或来源不明的二创图。
+这个安装包安装的是“安全中心”，不是注入器。安装、打开和卸载安全中心本身都不会修改 ChatGPT/Codex。它提供：
 
-## 界面预览
+- 复制可莉配色并打开官方外观设置；
+- 查看主题预览；
+- 用户确认后清理 v1.x 的已知残留；
+- 导出不含账号令牌、文件内容、对话和项目数据的诊断；
+- 卸载安全中心。
 
-| 首页全屏版 | 聊天页 |
+## 官方方式应用可莉配色
+
+新版 ChatGPT/Codex 已在“设置 → 外观”中支持基础主题、强调色、背景色、前景色和字体。Windows 安全中心会把下面的配色复制到剪贴板并打开设置；macOS 可以双击 `Open Klee Theme Settings on macOS.command`。
+
+| 项目 | 值 |
 | --- | --- |
-| ![可莉主题首页全屏版预览](docs/previews/home-fullscreen.webp) | ![可莉主题聊天页预览](docs/previews/chat.webp) |
+| 基础主题 | 浅色 |
+| 强调色 | `#C94A3C` |
+| 背景色 | `#FFF9F0` |
+| 前景色 | `#4B2B28` |
+| 辅助暖金 | `#E8B04A` |
 
-预览图按Codex当前界面结构本地渲染，用于展示配色、裁切和布局。真实界面中的按钮、侧栏、建议卡和输入框仍是Codex原生控件。
+官方目前没有公开、稳定的桌面外观导入文件格式或命令行接口，因此 v2.0 不会替用户写内部配置。需要在官方“外观”页面确认颜色。这一步多一次点击，但不会改变应用启动方式。
 
-## 支持平台
+## 预览
 
-- Windows 10/11，Microsoft Store版Codex Desktop
-- macOS，官方Codex Desktop
-- Windows一键安装包无需另装Node.js；手动安装方式需要Node.js 20或更高版本
+| 首页概念预览 | 聊天页概念预览 |
+| --- | --- |
+| ![可莉主题首页预览](docs/previews/home-fullscreen.webp) | ![可莉主题聊天页预览](docs/previews/chat.webp) |
 
-## Windows手动安装
+预览图用于展示配色与视觉方向。v2.0 不会把人物插画注入应用界面；实际可用效果以官方“外观”设置支持的项目为准。
 
-先打开并登录一次Codex，然后在PowerShell中运行：
+## v2.0 的安全边界
 
-```powershell
-git clone https://github.com/uinaqx/genshin_codexnew.git
-cd genshin_codexnew
-.\quickstart.ps1
-```
+| 行为 | v2.0 |
+| --- | --- |
+| 修改 ChatGPT/Codex 安装文件 | 不会 |
+| 修改应用启动参数 | 不会 |
+| 开启调试端口或注入脚本 | 不会 |
+| 安装后台 watcher | 不会 |
+| 自动重置或重新注册应用包 | 不会 |
+| 自动清理官方缓存或登录状态 | 不会 |
+| 自动修改 `~/.codex/config.toml` | 不会 |
+| 删除 `sessions`、`archived_sessions` 或项目 | 不会 |
+| 用户确认后清理 v1.x 精确残留 | 会 |
 
-安装后默认启用可莉全屏主题。切换布局：
+## 从旧版升级
 
-```powershell
-node scripts\set-theme.mjs klee-spark-knight fullscreen
-node scripts\set-theme.mjs klee-spark-knight banner
-```
+如果 ChatGPT/Codex 已经能正常打开，可以直接安装 v2.0。打开安全中心后，只有在它提示检测到旧版残留时，再点“安全清理旧版残留”。
 
-恢复官方界面：
+清理程序只处理：
 
-```powershell
-scripts\restore-dream-skin.ps1
-```
+- `%LOCALAPPDATA%\CodexDreamSkin`；
+- 旧版 watcher 和快捷方式；
+- v1.x 写入 `config.toml` 的三项外观键；
+- 将旧版状态目录整体移到桌面备份，而不是直接删除。
 
-完整卸载并恢复安装前的基础配色：
+它不会清理官方应用缓存，也不会重置应用包。详细故障复盘见 [docs/INCIDENT-2026-07.md](docs/INCIDENT-2026-07.md)。
 
-```powershell
-scripts\restore-dream-skin.ps1 -Uninstall -RestoreBaseTheme
-```
+## 当前支持状态
 
-## macOS安装
+| 平台 | 状态 | 使用方式 |
+| --- | --- | --- |
+| Windows 10/11 | 已验证安全中心构建与静态安全契约 | 安装 v2.0，手动确认官方外观颜色 |
+| macOS | 无注入辅助脚本 | 双击设置助手，手动确认官方外观颜色 |
+| Windows/macOS 人物背景注入 | 已停用 | 等待官方公开稳定扩展接口 |
 
-下载并解压仓库后，双击：
-
-```text
-Install AutoSkin on macOS.command
-```
-
-也可以在终端运行：
-
-```bash
-scripts/autoskin-macos.sh install
-scripts/autoskin-macos.sh theme klee-spark-knight fullscreen
-```
-
-卸载：
+## 开发验证
 
 ```bash
-scripts/autoskin-macos.sh uninstall
+node tests/test-palette.mjs
+node tests/test-windows-safety.mjs
 ```
 
-## 它怎么工作
+Windows CI 还会使用 PowerShell 解析器检查两份脚本，再用 Inno Setup 构建安装包并生成 SHA-256。安全契约会阻止调试端口、应用包重置和旧版注入文件重新进入主分支。
 
-项目启动Codex时只在本机回环地址开启调试端口，再通过CDP注入CSS和少量界面装饰脚本。它不会替换或修改Codex官方文件，不会清空聊天、项目、登录信息或插件。
+## 声明
 
-主题文件位于：
-
-```text
-themes/klee-spark-knight/
-├── art.webp
-├── extra.css
-└── theme.json
-```
-
-更换主视觉或继续调整主题时，请按[THEME-SPEC.md](THEME-SPEC.md)的规则操作。
-
-## 验证
-
-列出并校验主题：
-
-```bash
-node scripts/injector.mjs --themes
-node tests/test-klee-theme.mjs
-```
-
-macOS完整测试：
-
-```bash
-tests/test-macos.sh
-```
-
-## 许可证与声明
-
-代码基于[Finderchangchang/codex-autoskin](https://github.com/Finderchangchang/codex-autoskin)，使用MIT许可证。修改说明见[NOTICE.md](NOTICE.md)，素材来源见[ASSET_PROVENANCE.md](ASSET_PROVENANCE.md)。
-
-这是非官方同人项目，与OpenAI、HoYoverse无隶属或合作关系。角色形象、游戏名称和相关标识不属于MIT授权内容。
+这是非官方、非商业的同人项目，与 OpenAI、HoYoverse 无隶属或合作关系。代码使用 MIT 许可证；角色形象、游戏名称和相关标识不属于 MIT 授权内容。素材说明见 [ASSET_PROVENANCE.md](ASSET_PROVENANCE.md)。

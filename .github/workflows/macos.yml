@@ -1,4 +1,4 @@
-name: macOS
+name: Validate macOS settings helper
 
 on:
   push:
@@ -13,8 +13,8 @@ jobs:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 24
-      - name: Run macOS tests
-        run: tests/test-macos.sh
+      - name: Validate helper syntax and safety
+        run: |
+          zsh -n "Open Klee Theme Settings on macOS.command"
+          ! grep -R -- '--remote-debugging-port' "Open Klee Theme Settings on macOS.command"
+          grep -q "codex://settings" "Open Klee Theme Settings on macOS.command"

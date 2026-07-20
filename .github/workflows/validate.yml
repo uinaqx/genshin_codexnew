@@ -1,4 +1,4 @@
-name: Validate Klee theme
+name: Validate safe edition
 
 on:
   push:
@@ -16,7 +16,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 24
-      - name: Validate theme manifest and assets
+      - name: Run safety contracts
         run: |
-          node tests/test-klee-theme.mjs
-          node tests/test-windows-installer.mjs
+          node tests/test-palette.mjs
+          node tests/test-windows-safety.mjs
