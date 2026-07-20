@@ -1,6 +1,7 @@
 ﻿[CmdletBinding()]
 param(
   [switch]$InstallAndLaunch,
+  [switch]$EmergencyRecover,
   [switch]$PrepareUninstall,
   [switch]$NonInteractive
 )
@@ -24,8 +25,11 @@ function Write-ManagerLog([string]$Message) {
 }
 
 function Assert-CodexReady {
-  try { $null = Get-DreamCodexPackage } catch {
+  try { $package = Get-DreamCodexPackage } catch {
     throw '没有检测到Microsoft Store版Codex。请先安装Codex并正常打开一次。'
+  }
+  if ([version]$package.Version -ge [version]'26.700.0.0') {
+    throw '当前Microsoft Store版Codex已禁止这种调试启动方式，暂时不能安全换肤。管理器不会再修改配置。'
   }
   $config = Join-Path $HOME '.codex\config.toml'
   if (-not (Test-Path -LiteralPath $config)) {
@@ -80,7 +84,7 @@ function Export-DreamDiagnostics {
   $lines = New-Object System.Collections.Generic.List[string]
   $lines.Add('Klee Codex Skin diagnostics (no auth.json contents are collected)')
   $lines.Add("Generated: $(Get-Date -Format o)")
-  $lines.Add("Manager: 1.1.1")
+  $lines.Add("Manager: 1.1.2")
   $lines.Add("Windows: $([Environment]::OSVersion.VersionString)")
   $lines.Add("PowerShell: $($PSVersionTable.PSVersion)")
   try {
@@ -121,6 +125,12 @@ function Export-DreamDiagnostics {
   return $path
 }
 
+function Invoke-EmergencyRecovery {
+  Write-ManagerLog 'Emergency official recovery requested.'
+  & (Join-Path $ScriptsRoot 'recover-official-codex.ps1') -NonInteractive
+  Write-ManagerLog 'Emergency official recovery completed.'
+}
+
 function Get-SkinStatusText {
   $statePath = Join-Path $StateRoot 'state.json'
   if (-not (Test-Path -LiteralPath $statePath)) { return '当前状态：官方界面' }
@@ -135,11 +145,16 @@ function Get-SkinStatusText {
 }
 
 function Invoke-PrepareUninstall {
-  try { Invoke-RestoreOfficial } catch { Write-ManagerLog "Prepare uninstall warning: $($_.Exception.Message)" }
+  try { Invoke-EmergencyRecovery } catch { Write-ManagerLog "Prepare uninstall warning: $($_.Exception.Message)" }
 }
 
 if ($PrepareUninstall) {
   Invoke-PrepareUninstall
+  exit 0
+}
+
+if ($EmergencyRecover -and $NonInteractive) {
+  Invoke-EmergencyRecovery
   exit 0
 }
 
@@ -217,7 +232,7 @@ function New-ManagerButton([string]$Text, [int]$X, [int]$Y, [int]$Width, [System
 $enableButton = New-ManagerButton '启用或修复可莉皮肤' 28 222 686 $red ([System.Drawing.Color]::White)
 $fullscreenButton = New-ManagerButton '切换为全屏版式' 28 298 328 $softCream $darkRed
 $bannerButton = New-ManagerButton '切换为横幅版式' 386 298 328 $softCream $darkRed
-$restoreButton = New-ManagerButton '恢复官方界面' 28 374 328 ([System.Drawing.Color]::White) $ink
+$restoreButton = New-ManagerButton '深度恢复官方Codex' 28 374 328 ([System.Drawing.Color]::White) $ink
 $uninstallButton = New-ManagerButton '彻底卸载皮肤管理器' 386 374 328 ([System.Drawing.Color]::White) $darkRed
 $diagnosticsButton = New-ManagerButton '导出诊断报告' 28 450 686 $softCream $ink
 
@@ -229,7 +244,7 @@ $hint.Location = New-Object System.Drawing.Point(31, 535)
 $form.Controls.Add($hint)
 
 $version = New-Object System.Windows.Forms.Label
-$version.Text = 'Klee Spark Knight · v1.1.1'
+$version.Text = 'Klee Spark Knight · v1.1.2 · 安全恢复版'
 $version.ForeColor = $muted
 $version.AutoSize = $true
 $version.Location = New-Object System.Drawing.Point(31, 565)
@@ -258,7 +273,7 @@ function Invoke-UiAction([string]$BusyText, [scriptblock]$Action, [string]$Succe
 $enableButton.Add_Click({ Invoke-UiAction '正在启动可莉皮肤…' { Invoke-EnableSkin 'fullscreen' } '可莉皮肤已启用' })
 $fullscreenButton.Add_Click({ Invoke-UiAction '正在切换全屏版式…' { Invoke-EnableSkin 'fullscreen' } '已切换为全屏版式' })
 $bannerButton.Add_Click({ Invoke-UiAction '正在切换横幅版式…' { Invoke-EnableSkin 'banner' } '已切换为横幅版式' })
-$restoreButton.Add_Click({ Invoke-UiAction '正在恢复并重启官方Codex…' { Invoke-RestoreOfficial } '已恢复并重启官方Codex' })
+$restoreButton.Add_Click({ Invoke-UiAction '正在深度恢复官方Codex…' { Invoke-EmergencyRecovery } '已还原完整配置、重建缓存并启动官方Codex' })
 $diagnosticsButton.Add_Click({
   Invoke-UiAction '正在生成诊断报告…' { $script:LastDiagnosticsPath = Export-DreamDiagnostics } '诊断报告已保存到桌面'
 })
@@ -274,7 +289,12 @@ $uninstallButton.Add_Click({
   $form.Close()
 })
 
-if ($InstallAndLaunch) {
+if ($EmergencyRecover) {
+  $form.Add_Shown({
+    $form.Activate()
+    Invoke-UiAction '正在自动恢复官方Codex…' { Invoke-EmergencyRecovery } '恢复完成，已从官方入口启动Codex'
+  })
+} elseif ($InstallAndLaunch) {
   $form.Add_Shown({
     $form.Activate()
     Invoke-UiAction '首次安装，正在自动启用可莉皮肤…' { Invoke-EnableSkin 'fullscreen' } '安装完成，可莉皮肤已启用'

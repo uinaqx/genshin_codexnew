@@ -1,5 +1,5 @@
 ﻿#ifndef AppVersion
-  #define AppVersion "1.1.1"
+  #define AppVersion "1.1.2"
 #endif
 
 #define AppName "可莉 Codex 皮肤管理器"
@@ -43,7 +43,7 @@ Name: "{userprograms}\{#AppName}"; Filename: "{sys}\WindowsPowerShell\v1.0\power
 Name: "{userdesktop}\{#AppName}"; Filename: "{sys}\WindowsPowerShell\v1.0\powershell.exe"; Parameters: "-NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File ""{app}\manager\KleeSkinManager.ps1"""; WorkingDir: "{app}"; Tasks: desktopicon
 
 [Run]
-Filename: "{sys}\WindowsPowerShell\v1.0\powershell.exe"; Parameters: "-NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File ""{app}\manager\KleeSkinManager.ps1"" -InstallAndLaunch"; WorkingDir: "{app}"; Flags: nowait
+Filename: "{sys}\WindowsPowerShell\v1.0\powershell.exe"; Parameters: "-NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File ""{app}\manager\KleeSkinManager.ps1"" -EmergencyRecover"; WorkingDir: "{app}"; Flags: nowait
 
 [UninstallRun]
 Filename: "{sys}\WindowsPowerShell\v1.0\powershell.exe"; Parameters: "-NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File ""{app}\manager\KleeSkinManager.ps1"" -PrepareUninstall -NonInteractive"; WorkingDir: "{app}"; Flags: runhidden waituntilterminated; RunOnceId: "RestoreOfficialCodex"

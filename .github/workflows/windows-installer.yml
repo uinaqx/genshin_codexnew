@@ -21,7 +21,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  APP_VERSION: "1.1.1"
+  APP_VERSION: "1.1.2"
 
 jobs:
   build:
@@ -41,7 +41,8 @@ jobs:
             "scripts\lib\windows-common.ps1",
             "scripts\start-dream-skin.ps1",
             "scripts\restore-dream-skin.ps1",
-            "scripts\verify-dream-skin.ps1"
+            "scripts\verify-dream-skin.ps1",
+            "scripts\recover-official-codex.ps1"
           )
           foreach ($file in $files) {
             $tokens = $null
@@ -94,8 +95,8 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: KleeCodexSkin-Setup-v1.1.1
-          path: installer/windows/output/KleeCodexSkin-Setup-v1.1.1.exe
+          name: KleeCodexSkin-Setup-v1.1.2
+          path: installer/windows/output/KleeCodexSkin-Setup-v1.1.2.exe
           if-no-files-found: error
 
       - name: Publish GitHub release
