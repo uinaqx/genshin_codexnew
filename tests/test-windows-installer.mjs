@@ -25,8 +25,14 @@ assert.ok(workflow.includes("gh release create"), "installer must be published a
 assert.ok(common.includes("runtime\\node\\node.exe"), "engine must discover bundled Node");
 assert.ok(common.includes("shell:AppsFolder"), "official recovery must use the Store app entrypoint");
 assert.ok(installer.includes("-EmergencyRecover"), "installer must recover instead of auto-enabling on affected builds");
-assert.ok(recovery.includes("config.before-dream-skin.toml"), "recovery must restore the exact pre-skin config");
-assert.ok(recovery.includes("Codex.before-klee-"), "recovery must preserve the old renderer cache");
+assert.ok(recovery.includes("LocalCache\\Roaming\\Codex"), "recovery must reset the real MSIX roaming profile");
+assert.ok(recovery.includes("LocalCache\\Local\\Codex"), "recovery must collect and reset the real MSIX local profile");
+assert.ok(recovery.includes("Reset-AppxPackage"), "recovery must reset the current-user MSIX package state");
+assert.ok(recovery.includes("Add-AppxPackage"), "recovery must re-register the official package");
+assert.ok(recovery.includes("auth.json"), "full recovery must force a clean account session");
+assert.ok(recovery.includes("cap_sid"), "full recovery must reset the secondary account session marker");
+assert.ok(recovery.includes("before-klee-recovery"), "every moved item must have a recoverable backup name");
+assert.ok(recovery.includes("Official app logs"), "recovery must capture official app errors before and after reset");
 assert.ok(!recovery.includes("Get-Content -LiteralPath $auth"), "recovery must not read auth.json contents");
 
 console.log("Windows installer contract passed.");

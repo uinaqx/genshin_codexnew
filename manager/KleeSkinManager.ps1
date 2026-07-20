@@ -84,7 +84,7 @@ function Export-DreamDiagnostics {
   $lines = New-Object System.Collections.Generic.List[string]
   $lines.Add('Klee Codex Skin diagnostics (no auth.json contents are collected)')
   $lines.Add("Generated: $(Get-Date -Format o)")
-  $lines.Add("Manager: 1.1.2")
+  $lines.Add("Manager: 1.1.3")
   $lines.Add("Windows: $([Environment]::OSVersion.VersionString)")
   $lines.Add("PowerShell: $($PSVersionTable.PSVersion)")
   try {
@@ -126,9 +126,9 @@ function Export-DreamDiagnostics {
 }
 
 function Invoke-EmergencyRecovery {
-  Write-ManagerLog 'Emergency official recovery requested.'
+  Write-ManagerLog 'Full official reset requested.'
   & (Join-Path $ScriptsRoot 'recover-official-codex.ps1') -NonInteractive
-  Write-ManagerLog 'Emergency official recovery completed.'
+  Write-ManagerLog 'Full official reset script completed; user sign-in may still be required.'
 }
 
 function Get-SkinStatusText {
@@ -145,7 +145,7 @@ function Get-SkinStatusText {
 }
 
 function Invoke-PrepareUninstall {
-  try { Invoke-EmergencyRecovery } catch { Write-ManagerLog "Prepare uninstall warning: $($_.Exception.Message)" }
+  try { Invoke-RestoreOfficial } catch { Write-ManagerLog "Prepare uninstall warning: $($_.Exception.Message)" }
 }
 
 if ($PrepareUninstall) {
@@ -244,7 +244,7 @@ $hint.Location = New-Object System.Drawing.Point(31, 535)
 $form.Controls.Add($hint)
 
 $version = New-Object System.Windows.Forms.Label
-$version.Text = 'Klee Spark Knight · v1.1.2 · 安全恢复版'
+$version.Text = 'Klee Spark Knight · v1.1.3 · 完整恢复版'
 $version.ForeColor = $muted
 $version.AutoSize = $true
 $version.Location = New-Object System.Drawing.Point(31, 565)
@@ -273,7 +273,7 @@ function Invoke-UiAction([string]$BusyText, [scriptblock]$Action, [string]$Succe
 $enableButton.Add_Click({ Invoke-UiAction '正在启动可莉皮肤…' { Invoke-EnableSkin 'fullscreen' } '可莉皮肤已启用' })
 $fullscreenButton.Add_Click({ Invoke-UiAction '正在切换全屏版式…' { Invoke-EnableSkin 'fullscreen' } '已切换为全屏版式' })
 $bannerButton.Add_Click({ Invoke-UiAction '正在切换横幅版式…' { Invoke-EnableSkin 'banner' } '已切换为横幅版式' })
-$restoreButton.Add_Click({ Invoke-UiAction '正在深度恢复官方Codex…' { Invoke-EmergencyRecovery } '已还原完整配置、重建缓存并启动官方Codex' })
+$restoreButton.Add_Click({ Invoke-UiAction '正在完整重置官方Codex…' { Invoke-EmergencyRecovery } '恢复脚本已执行；请在官方窗口重新登录' })
 $diagnosticsButton.Add_Click({
   Invoke-UiAction '正在生成诊断报告…' { $script:LastDiagnosticsPath = Export-DreamDiagnostics } '诊断报告已保存到桌面'
 })
@@ -292,7 +292,7 @@ $uninstallButton.Add_Click({
 if ($EmergencyRecover) {
   $form.Add_Shown({
     $form.Activate()
-    Invoke-UiAction '正在自动恢复官方Codex…' { Invoke-EmergencyRecovery } '恢复完成，已从官方入口启动Codex'
+    Invoke-UiAction '正在自动完整重置官方Codex…' { Invoke-EmergencyRecovery } '恢复脚本已执行；请在官方窗口重新登录'
   })
 } elseif ($InstallAndLaunch) {
   $form.Add_Shown({

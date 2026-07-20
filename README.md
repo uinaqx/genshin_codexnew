@@ -6,9 +6,9 @@
 
 直接下载并双击：
 
-[下载KleeCodexSkin-Setup-v1.1.2.exe](https://github.com/uinaqx/genshin_codexnew/releases/latest/download/KleeCodexSkin-Setup-v1.1.2.exe)
+[下载KleeCodexSkin-Setup-v1.1.3.exe](https://github.com/uinaqx/genshin_codexnew/releases/latest/download/KleeCodexSkin-Setup-v1.1.3.exe)
 
-> 紧急兼容说明：Microsoft Store Codex 26.700及以上版本会拒绝CDP调试启动。v1.1.2安装后默认执行安全恢复，不会自动启用皮肤；它会还原完整安装前配置、备份并重建渲染缓存，然后从官方入口启动Codex。
+> 紧急兼容说明：Microsoft Store Codex 26.700及以上版本会拒绝CDP调试启动。v1.1.3不会在这些版本上启用皮肤；安装后会备份并重置Microsoft Store沙箱中的真实Codex缓存、`config.toml`与账号会话，再从官方入口启动。需要重新登录，项目目录和`.codex`会话历史不会被删除，旧状态均以`before-klee-recovery`名称保留。
 
 安装包自带Node运行环境。安装完成后会自动打开可莉Codex皮肤管理器，可以：
 
